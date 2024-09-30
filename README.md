@@ -1,11 +1,11 @@
 Python drag-and-drop interface to resize images, maintain aspect ratio, and save as JPG/PNG/WebP as desired.
 
-## Required modules:
+![Python Image Resizer](imgresizer.png)
 
+### Required modules:
 - tkinter
 - tkinterdnd2
 - Pillow
-
 ## How to use:
 - Open the pyw file
 - Insert a desired image width
