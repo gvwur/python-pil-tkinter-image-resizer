@@ -27,17 +27,17 @@ def resize_image(image_path, new_width):
         selected_format = file_format.get()
         
         if selected_format == "JPG":
-            new_file_name = f"{file_name_without_ext}_resized.jpg"
+            new_file_name = f"{file_name_without_ext}_resized_{new_width}.jpg"
             save_path = os.path.join(file_dir, new_file_name)
             resized_image.convert("RGB").save(save_path, "JPEG", quality=95)
 
         elif selected_format == "PNG":
-            new_file_name = f"{file_name_without_ext}_resized.png"
+            new_file_name = f"{file_name_without_ext}_resized_{new_width}.png"
             save_path = os.path.join(file_dir, new_file_name)
             resized_image.save(save_path, "PNG", compress_level=5)
 
         elif selected_format == "WebP":
-            new_file_name = f"{file_name_without_ext}_resized.webp"
+            new_file_name = f"{file_name_without_ext}_resized_{new_width}.webp"
             save_path = os.path.join(file_dir, new_file_name)
             resized_image.convert("RGB").save(save_path, "WebP", quality=95)
         
