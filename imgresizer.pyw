@@ -19,21 +19,34 @@ def resize_image(image_path, new_width):
         # Resize the image
         resized_image = image.resize((new_width, new_height))
         
-        # Construct the new file name with "_resized" and save it as a .jpg
+        # Construct the new file name based on the selected format
         file_dir, file_name = os.path.split(image_path)
         file_name_without_ext, _ = os.path.splitext(file_name)
-        new_file_name = f"{file_name_without_ext}_resized.jpg"
-        save_path = os.path.join(file_dir, new_file_name)
+
+        # Get the selected file format from radio buttons
+        selected_format = file_format.get()
         
-        # Save the resized image as a JPG
-        resized_image.convert("RGB").save(save_path, "JPEG", quality=95)
-        #resized_image.save(save_path, "PNG", compress_level=8)
-        #resized_image.save(save_path, "webp", quality=95)
+        if selected_format == "JPG":
+            new_file_name = f"{file_name_without_ext}_resized.jpg"
+            save_path = os.path.join(file_dir, new_file_name)
+            resized_image.convert("RGB").save(save_path, "JPEG", quality=95)
+
+        elif selected_format == "PNG":
+            new_file_name = f"{file_name_without_ext}_resized.png"
+            save_path = os.path.join(file_dir, new_file_name)
+            resized_image.save(save_path, "PNG", compress_level=5)
+
+        elif selected_format == "WebP":
+            new_file_name = f"{file_name_without_ext}_resized.webp"
+            save_path = os.path.join(file_dir, new_file_name)
+            resized_image.convert("RGB").save(save_path, "WebP", quality=95)
         
-        status_label.config(text=f"Image saved to {save_path} ({new_width}x{new_height})")
-        status_label.update()  # Force immediate update to the UI
+        status_label.config(text=f"Image saved: \n{new_file_name} ({new_width}x{new_height})")
+        status_label.update()
+        
     except Exception as e:
         status_label.config(text=f"Error resizing image: {e}")
+
 
 # Function to handle file drop event
 def on_drop(event):
@@ -52,7 +65,7 @@ def on_drop(event):
 # GUI setup
 root = TkinterDnD.Tk()  # Creating a TkinterDnD window
 root.title("Drag & Drop Image Resizer")
-root.geometry("500x350")
+root.geometry("288x430")
 
 # Labels and entry fields for width (no height input)
 tk.Label(root, text="Width:").pack(pady=5)
@@ -71,5 +84,13 @@ drop_area.dnd_bind('<<Drop>>', on_drop)
 status_label = tk.Label(root, text="")
 status_label.pack(pady=10)  # Ensure this is correctly placed
 
+# Add a StringVar to hold the selected file format
+file_format = tk.StringVar(value="JPG")  # Default to JPG
+
+# Add radio buttons for format selection
+tk.Label(root, text="Select format:").pack(pady=5)
+tk.Radiobutton(root, text="JPG", variable=file_format, value="JPG").pack(padx=30,side='left')
+tk.Radiobutton(root, text="PNG", variable=file_format, value="PNG").pack(padx=10,side='left')
+tk.Radiobutton(root, text="WebP", variable=file_format, value="WebP").pack(padx=10,side='left')
 
 root.mainloop()
